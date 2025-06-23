@@ -11,42 +11,42 @@ import Link from "next/link";
 
 const categories = [
   {
-    name: "Singers",
+    name: "Singer",
     description: "Explore talented singers for your next event.",
     image: SingerImage,
   },
   {
-    name: "Dancers",
+    name: "Dancer",
     description: "Discover skilled dancers to elevate your event.",
     image: DancerImage,
   },
   {
-    name: "DJs",
+    name: "DJ",
     description: "Find the perfect DJ to set the mood for your party.",
     image: DJImage,
   },
   {
-    name: "Speakers",
+    name: "Speaker",
     description: "Engage with inspiring speakers for your conferences.",
     image: SpeakerImage,
   },
   {
-    name: "Comedians",
+    name: "Comedian",
     description: "Add humor to your events with talented comedians.",
     image: ComedianImage,
   },
   {
-    name: "Magicians",
+    name: "Magician",
     description: "Amaze your guests with skilled magicians.",
     image: MagicianImage,
   },
   {
-    name: "Painters",
+    name: "Painter",
     description: "Hire artists to create live art at your events.",
     image: PainterImage,
   },
   {
-    name: "Photographers",
+    name: "Photographer",
     description: "Capture memories with professional photographers.",
     image: PhotographerImage,
   },

@@ -1,5 +1,6 @@
 "use client";
 
+import { InfiniteScrolling } from "@/components/infinite-scrolling";
 import { useArtistFilter } from "../hooks/use-artist-filter";
 import { useArtists } from "../hooks/use-artists";
 import { ArtistCard } from "./artist-card";
@@ -17,7 +18,7 @@ function Wrapper() {
   const {
     filters: { minPrice, maxPrice, category, limit, location },
   } = useArtistFilter();
-  const { data, isLoading } = useArtists({
+  const { data, isLoading, fetchNextPage, isFetchingNextPage } = useArtists({
     limit,
     category,
     location,
@@ -28,7 +29,7 @@ function Wrapper() {
   if (isLoading) {
     return (
       <div className="grid grid-cols-3 gap-4">
-        {Array.from({ length: 9 }).map((_, index) => (
+        {Array.from({ length: 3 }).map((_, index) => (
           <ArtistCardSkeleton key={index} />
         ))}
       </div>
@@ -43,6 +44,14 @@ function Wrapper() {
       {data.map((artist) => (
         <ArtistCard key={artist.id} artist={artist} />
       ))}
+      {isFetchingNextPage && (
+        <>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <ArtistCardSkeleton key={index} />
+          ))}
+        </>
+      )}
+      <InfiniteScrolling nextPage={fetchNextPage} />
     </div>
   );
 }

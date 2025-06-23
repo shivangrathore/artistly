@@ -38,7 +38,7 @@ export default function Filters() {
   }, [category, location, limit, setFilters]);
 
   return (
-    <div className="flex flex-col w-[200px] gap-4 sticky top-0 right-0">
+    <div className="flex flex-col w-[240px] gap-4 sticky top-0 right-0 shrink-0">
       <FilterItem>
         <Label htmlFor="category">Category</Label>
         <Select

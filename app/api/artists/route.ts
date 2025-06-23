@@ -47,6 +47,8 @@ export async function GET(req: NextRequest) {
   if (query.maxPrice !== undefined) {
     data = data.filter((artist) => artist.price <= query.maxPrice!);
   }
-  data = data.slice(offset, limit);
-  return NextResponse.json(data);
+  data = data.slice(offset);
+  const hasNextPage = data.length > limit;
+  data = data.slice(0, limit);
+  return NextResponse.json({ data, hasNextPage });
 }

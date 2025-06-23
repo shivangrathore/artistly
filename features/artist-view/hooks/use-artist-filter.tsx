@@ -26,7 +26,7 @@ export const useArtistFilter = () => {
       minPrice: minPrice ? parseInt(minPrice) : undefined,
       maxPrice: maxPrice ? parseInt(maxPrice) : undefined,
       category: category || undefined,
-      limit: limit ? parseInt(limit, 10) : 10,
+      limit: limit ? parseInt(limit, 10) : 9,
       offset: offset ? parseInt(offset, 10) : 0,
       location: location || undefined,
     };
