@@ -30,10 +30,16 @@ export async function GET(req: NextRequest) {
   const offset = query.offset ?? 0;
   let data = [...artists];
   if (query.category && query.category.length > 0) {
-    data = data.filter((artist) => query.category!.includes(artist.category));
+    data = data.filter(
+      (artist) =>
+        query.category?.toLowerCase() == artist.category.toLowerCase(),
+    );
   }
   if (query.location && query.location.length > 0) {
-    data = data.filter((artist) => query.location!.includes(artist.location));
+    data = data.filter(
+      (artist) =>
+        query.location?.toLowerCase() == artist.location.toLowerCase(),
+    );
   }
   if (query.minPrice !== undefined) {
     data = data.filter((artist) => artist.price >= query.minPrice!);

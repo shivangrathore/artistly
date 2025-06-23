@@ -9,7 +9,7 @@ import {
 import { useArtistFilter } from "../hooks/use-artist-filter";
 import { CATEGORIES, LOCATIONS } from "@/data";
 import { Label } from "@/components/ui/label";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { Slider } from "@/components/ui/slider";
 
 function FilterItem({ children }: PropsWithChildren) {
@@ -17,17 +17,26 @@ function FilterItem({ children }: PropsWithChildren) {
 }
 
 export default function Filters() {
-  const {
-    limit,
-    offset,
-    category,
-    location,
-    maxPrice,
-    minPrice,
-    setLimit,
-    setCategory,
-    setLocation,
-  } = useArtistFilter();
+  const { filters, setFilters } = useArtistFilter();
+  const [category, setCategory] = useState<string | undefined>(
+    filters.category,
+  );
+  const [location, setLocation] = useState<string | undefined>(
+    filters.location,
+  );
+  const [limit, setLimit] = useState<number>(filters.limit || 10);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setFilters({
+        category,
+        location,
+        limit,
+      });
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [category, location, limit, setFilters]);
+
   return (
     <div className="flex flex-col w-[200px] gap-4 sticky top-0 right-0">
       <FilterItem>
@@ -41,7 +50,7 @@ export default function Filters() {
           </SelectTrigger>
           <SelectContent>
             {CATEGORIES.map((category) => (
-              <SelectItem key={category} value={category}>
+              <SelectItem key={category} value={category.toLowerCase()}>
                 {category}
               </SelectItem>
             ))}
@@ -61,7 +70,7 @@ export default function Filters() {
           </SelectTrigger>
           <SelectContent>
             {LOCATIONS.map((location) => (
-              <SelectItem key={location} value={location}>
+              <SelectItem key={location} value={location.toLowerCase()}>
                 {location}
               </SelectItem>
             ))}

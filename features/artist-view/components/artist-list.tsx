@@ -14,7 +14,9 @@ export default function ArtistList() {
 }
 
 function Wrapper() {
-  const { limit, category, location, minPrice, maxPrice } = useArtistFilter();
+  const {
+    filters: { minPrice, maxPrice, category, limit, location },
+  } = useArtistFilter();
   const { data, isLoading } = useArtists({
     limit,
     category,
