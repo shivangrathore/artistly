@@ -7,38 +7,53 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useArtistFilter } from "../hooks/use-artist-filter";
-import { CATEGORIES, LOCATIONS } from "@/data";
+import { CATEGORIES, LOCATIONS, MAX_PRICE, MIN_PRICE } from "@/data";
 import { Label } from "@/components/ui/label";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { Slider } from "@/components/ui/slider";
+import { Button } from "@/components/ui/button";
 
 function FilterItem({ children }: PropsWithChildren) {
   return <div className="flex flex-col gap-4">{children}</div>;
 }
 
 export default function Filters() {
-  const { filters, setFilters } = useArtistFilter();
+  const { filters, setFilters, clearFilters } = useArtistFilter();
   const [category, setCategory] = useState<string | undefined>(
     filters.category,
   );
   const [location, setLocation] = useState<string | undefined>(
     filters.location,
   );
-  const [limit, setLimit] = useState<number>(filters.limit || 10);
+  const [minPrice, setMinPrice] = useState<number | undefined>(
+    filters.minPrice,
+  );
+  const [maxPrice, setMaxPrice] = useState<number | undefined>(
+    filters.maxPrice,
+  );
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setFilters({
         category,
         location,
-        limit,
+        minPrice,
+        maxPrice,
       });
     }, 500);
     return () => clearTimeout(timeout);
-  }, [category, location, limit, setFilters]);
+  }, [category, location, maxPrice, minPrice, setFilters]);
+
+  const handleClearFilters = () => {
+    setCategory(undefined);
+    setLocation(undefined);
+    setMinPrice(undefined);
+    setMaxPrice(undefined);
+    clearFilters();
+  };
 
   return (
-    <div className="flex flex-col w-[240px] gap-4 sticky top-0 right-0 shrink-0">
+    <div className="flex flex-col w-[240px] gap-4 shrink-0">
       <FilterItem>
         <Label htmlFor="category">Category</Label>
         <Select
@@ -78,16 +93,30 @@ export default function Filters() {
         </Select>
       </FilterItem>
       <FilterItem>
-        <Label htmlFor="limit">Limit: {limit}</Label>
+        <Label htmlFor="minPrice">Min Price: {minPrice || "Any"}</Label>
         <Slider
           step={1}
-          min={1}
-          max={100}
+          min={MIN_PRICE}
+          max={MAX_PRICE}
           className="w-full"
-          value={[limit]}
-          onValueChange={(v) => setLimit(v[0])}
+          value={[minPrice || MIN_PRICE]}
+          onValueChange={(v) => setMinPrice(v[0] || undefined)}
         />
       </FilterItem>
+      <FilterItem>
+        <Label htmlFor="maxPrice">Max Price: {maxPrice || "Any"}</Label>
+        <Slider
+          step={1}
+          min={MIN_PRICE}
+          max={MAX_PRICE}
+          className="w-full"
+          value={[maxPrice || MAX_PRICE]}
+          onValueChange={(v) => setMaxPrice(v[0] || undefined)}
+        />
+      </FilterItem>
+      <Button variant="outline" className="w-full" onClick={handleClearFilters}>
+        Clear Filters
+      </Button>
     </div>
   );
 }

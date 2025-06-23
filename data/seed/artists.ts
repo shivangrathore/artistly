@@ -3,6 +3,7 @@ import { faker } from "@faker-js/faker";
 import { LOCATIONS } from "../locations";
 import { CATEGORIES } from "../categories";
 import fs from "fs/promises";
+import { MAX_PRICE, MIN_PRICE } from "..";
 
 async function saveArtists(artists: Artist[]) {
   const f = await fs.open("data/artists.json", "w");
@@ -31,7 +32,7 @@ function generateArtist(): Artist {
     category: randomCategory(),
     image: faker.image.personPortrait({ sex, size: 512 }),
     location: randomLocation(),
-    price: faker.number.int({ min: 500, max: 5000 }),
+    price: faker.number.int({ min: MIN_PRICE, max: MAX_PRICE }),
   };
 }
 

@@ -53,5 +53,21 @@ export const useArtistFilter = () => {
     [router, searchParams, pathname],
   );
 
-  return { filters, setFilters };
+  const clearFilters = useCallback(() => {
+    const currentParams = new URLSearchParams(searchParams.toString());
+    currentParams.delete("minPrice");
+    currentParams.delete("maxPrice");
+    currentParams.delete("category");
+    currentParams.delete("location");
+    currentParams.delete("limit");
+    currentParams.delete("offset");
+
+    const search = currentParams.toString();
+    const query = search ? `?${search}` : "";
+    const url = `${pathname}${query}`;
+
+    router.replace(url, { scroll: false });
+  }, [router, searchParams, pathname]);
+
+  return { filters, setFilters, clearFilters };
 };
