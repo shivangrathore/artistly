@@ -1,7 +1,8 @@
 export type Artist = {
   id: string;
   name: string;
-  category: string;
+  categories: string[];
+  languages: string[];
   image: string;
   location: string;
   price: number;

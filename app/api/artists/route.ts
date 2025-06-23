@@ -1,6 +1,9 @@
-import { artists } from "@/data";
+import { loadArtists } from "@/data";
+import { Artist } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
+
+const artists: Artist[] = loadArtists();
 
 const GetArtistsSchema = z.object({
   limit: z.coerce.number().min(1).max(100).default(10).optional(),
@@ -30,9 +33,10 @@ export async function GET(req: NextRequest) {
   const offset = query.offset ?? 0;
   let data = [...artists];
   if (query.category && query.category.length > 0) {
-    data = data.filter(
-      (artist) =>
-        query.category?.toLowerCase() == artist.category.toLowerCase(),
+    data = data.filter((artist) =>
+      artist.categories.some(
+        (cat) => cat.toLowerCase() == query.category?.toLowerCase(),
+      ),
     );
   }
   if (query.location && query.location.length > 0) {
