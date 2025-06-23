@@ -62,7 +62,7 @@ export function ExploreByCategories() {
       <div className="grid grid-cols-4 gap-4">
         {categories.map((category) => (
           <Link
-            href={`/explore/${category.name.toLowerCase()}`}
+            href={`/explore?category=${category.name.toLowerCase()}`}
             key={category.name}
             className="bg-white dark:bg-neutral-800 rounded-lg shadow-md p-4 flex flex-col items-center"
           >

@@ -14,4 +14,4 @@ export const LOCATIONS = [
   "Indore",
   "Thane",
   "Bhopal",
-];
+] as const;

@@ -30,8 +30,8 @@ export function HeroNavbar() {
   return (
     <header
       className={cn(
-        "text-white fixed top-0 bg-transparent z-50 flex justify-between items-center left-0 right-0",
-        hasScrolled && "bg-black/80 backdrop-blur-md",
+        "text-white fixed top-0 bg-transparent z-50 flex justify-between items-center left-0 right-0 transition-all duration-1000 ease-in-out",
+        hasScrolled && "bg-black/40 backdrop-blur-md",
       )}
     >
       <div className="flex justify-between items-center max-w-7xl p-6 mx-auto w-full">
