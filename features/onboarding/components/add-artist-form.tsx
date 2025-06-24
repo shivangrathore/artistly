@@ -12,23 +12,58 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateArtistSchema } from "@/lib/validation";
 import { useFieldArray } from "react-hook-form";
+import { CATEGORIES, LANGUAGES, LOCATIONS, MAX_PRICE, MIN_PRICE } from "@/data";
+import { MultiSelect } from "@/components/multi-select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const categoryOptions = CATEGORIES.map((category) => ({
+  value: category.toLowerCase(),
+  label: category,
+}));
+
+const languageOptions = LANGUAGES.map((language) => ({
+  value: language.toLowerCase(),
+  label: language,
+}));
 
 export default function AddArtistForm() {
   const form = useForm({
     resolver: zodResolver(CreateArtistSchema),
+    defaultValues: {
+      name: "",
+      categories: [],
+      languages: [],
+      image: "",
+      location: "",
+      price: MIN_PRICE,
+    },
   });
-  const { fields: categories } = useFieldArray({
+  const { fields: categories, replace: setCategories } = useFieldArray({
     name: "categories",
+    control: form.control,
+  });
+  const { fields: languages, replace: setLanguages } = useFieldArray({
+    name: "languages",
     control: form.control,
   });
   const onSubmit = (data: any) => {
     console.log("Form submitted with data:", data);
   };
+  const onError = (errors: any) => {
+    console.error("Form submission errors:", errors);
+  };
+  console.log(categories, languages);
   return (
     <Form {...form}>
       <form
         className="mt-8 max-w-xl flex flex-col gap-4"
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(onSubmit, onError)}
       >
         <FormField
           control={form.control}
@@ -45,23 +80,51 @@ export default function AddArtistForm() {
         <FormField
           control={form.control}
           name="categories"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>Categories</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="e.g., Rock, Pop" />
+                <MultiSelect
+                  className="bg-input/30 hover:bg-input/50"
+                  options={categoryOptions}
+                  onValueChange={(value) => {
+                    const selectedCategories = value.map((val) => ({
+                      value: val,
+                    }));
+                    setCategories(selectedCategories);
+                  }}
+                  defaultValue={[]}
+                  value={categories.map((cat: { value: string }) => cat.value)}
+                  placeholder="Select categories"
+                  variant="inverted"
+                  maxCount={categoryOptions.length}
+                />
               </FormControl>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name="categories"
-          render={({ field }) => (
+          name="languages"
+          render={() => (
             <FormItem>
               <FormLabel>Languages</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="e.g., Hindi, English" />
+                <MultiSelect
+                  className="bg-input/30 hover:bg-input/50"
+                  options={languageOptions}
+                  onValueChange={(value) => {
+                    const selectedLanguages = value.map((val) => ({
+                      value: val,
+                    }));
+                    setLanguages(selectedLanguages);
+                  }}
+                  defaultValue={[]}
+                  value={languages.map((lang: { value: string }) => lang.value)}
+                  placeholder="Select languages"
+                  variant="inverted"
+                  maxCount={languageOptions.length}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -74,9 +137,11 @@ export default function AddArtistForm() {
               <FormLabel>Fee</FormLabel>
               <FormControl>
                 <Input
+                  min={MIN_PRICE}
+                  max={MAX_PRICE}
                   {...field}
                   type="number"
-                  placeholder="Enter fee in USD"
+                  placeholder="Enter fee in INR"
                 />
               </FormControl>
             </FormItem>
@@ -108,7 +173,18 @@ export default function AddArtistForm() {
             <FormItem>
               <FormLabel>Location</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="e.g., New York, USA" />
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="e.g., Delhi, Bhopal" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {LOCATIONS.map((loc) => (
+                      <SelectItem key={loc} value={loc.toLowerCase()}>
+                        {loc}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
             </FormItem>
           )}

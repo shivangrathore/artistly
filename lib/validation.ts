@@ -7,9 +7,8 @@ const isValidLanguage = (lang: string) =>
 const isValidCategory = (cat: string) =>
   CATEGORIES.some((c) => c.toLowerCase() === cat.toLowerCase());
 
-const isValidLocation = (location: string) => {
+const isValidLocation = (location: string) =>
   LOCATIONS.some((c) => c.toLowerCase() === location.toLowerCase());
-};
 
 export const CreateArtistSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -31,7 +30,7 @@ export const CreateArtistSchema = z.object({
     .refine((langs) => langs.every((lang) => isValidLanguage(lang.value))),
   image: z.string().url("Image must be a valid URL"),
   location: z.string().min(1, "Location is required").refine(isValidLocation),
-  price: z
+  price: z.coerce
     .number()
     .min(MIN_PRICE, "Price must be a positive number")
     .max(MAX_PRICE, "Price must be less than 100000"),
