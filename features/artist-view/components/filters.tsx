@@ -53,7 +53,7 @@ export default function Filters() {
   };
 
   return (
-    <div className="flex flex-col w-[240px] gap-4 shrink-0">
+    <div className="flex flex-row flex-wrap lg:flex-nowrap lg:flex-col lg:w-[240px] gap-4 shrink-0">
       <FilterItem>
         <Label htmlFor="category">Category</Label>
         <Select

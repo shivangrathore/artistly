@@ -4,6 +4,7 @@ import Link from "next/link";
 import Artistly from "@/assets/artistly.png";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { MenuIcon } from "lucide-react";
 
 const navlinks = [
   { label: "Home", to: "/" },
@@ -11,34 +12,44 @@ const navlinks = [
   { label: "Onboarding", to: "/onboarding" },
 ];
 
-export function HeroNavbar() {
+export function Navbar() {
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setHasScrolled(true);
-      } else {
-        setHasScrolled(false);
-      }
+      setHasScrolled(window.scrollY > 50);
     };
-
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [setHasScrolled]);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <header
       className={cn(
         "text-white fixed top-0 bg-transparent z-50 flex justify-between items-center left-0 right-0 transition-all duration-1000 ease-in-out",
         hasScrolled && "bg-black/40 backdrop-blur-md",
+        menuOpen && "max-md:bg-black",
       )}
     >
-      <div className="flex justify-between items-center max-w-7xl p-6 mx-auto w-full">
+      <div className="justify-between items-center max-w-7xl p-6 mx-auto w-full flex">
         <Link href="/" className="text-2xl font-bold">
-          <Image src={Artistly} width={96} alt="Artistly" />
+          <Image
+            src={Artistly}
+            width={96}
+            className="w-20 md:w-24"
+            alt="Artistly"
+          />
         </Link>
-        <ul className="flex space-x-4">
+
+        <button
+          className="md:hidden block focus:outline-none"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <MenuIcon className="size-6" />
+        </button>
+
+        <ul className="space-x-4 hidden md:flex">
           {navlinks.map((link) => (
             <li key={link.label}>
               <Link href={link.to} className="cursor-pointer px-4 py-2 rounded">
@@ -48,6 +59,22 @@ export function HeroNavbar() {
           ))}
         </ul>
       </div>
+
+      {menuOpen && (
+        <ul className="md:hidden absolute top-full w-full px-6 py-4 space-y-2 bg-black">
+          {navlinks.map((link) => (
+            <li key={link.label}>
+              <Link
+                href={link.to}
+                className="block px-4 py-2 rounded"
+                onClick={() => setMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </header>
   );
 }

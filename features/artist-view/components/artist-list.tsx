@@ -28,7 +28,7 @@ function Wrapper() {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.from({ length: 3 }).map((_, index) => (
           <ArtistCardSkeleton key={index} />
         ))}
@@ -40,7 +40,7 @@ function Wrapper() {
     return <div>No artists found</div>;
   }
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid md:grid-cols-2  lg:grid-cols-3 gap-4">
       {data.map((artist) => (
         <ArtistCard key={artist.id} artist={artist} />
       ))}

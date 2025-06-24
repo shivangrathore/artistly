@@ -55,11 +55,13 @@ const categories = [
 export function ExploreByCategories() {
   return (
     <div className="flex flex-col max-w-7xl mx-auto p-6 py-40 justify-center min-h-screen bg-neutral-900">
-      <h1 className="text-4xl font-bold mb-2">Explore by Categories</h1>
-      <p className="text-lg text-gray-600 mb-4">
+      <h1 className="text-2xl md:text-4xl font-bold mb-2">
+        Explore by Categories
+      </h1>
+      <p className="text-base md:text-lg text-gray-600 mb-4">
         Discover artists across various categories to make your events special.
       </p>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {categories.map((category) => (
           <Link
             href={`/explore?category=${category.name.toLowerCase()}`}
