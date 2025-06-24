@@ -1,5 +1,10 @@
 import { ArtistView } from "@/features/artist-view/components";
 
+export const metadata = {
+  title: "Explore / Artistly",
+  description: "Explore the latest features and updates in our platform.",
+};
+
 export default function ExplorePage() {
   return (
     <div className="py-28 max-w-7xl mx-auto px-4 min-h-screen">
