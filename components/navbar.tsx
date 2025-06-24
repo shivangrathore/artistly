@@ -7,9 +7,8 @@ import { cn } from "@/lib/utils";
 import { MenuIcon } from "lucide-react";
 
 const navlinks = [
-  { label: "Home", to: "/" },
-  { label: "Explore", to: "/explore" },
-  { label: "Onboarding", to: "/onboarding" },
+  { label: "For Venues", to: "/explore" },
+  { label: "For Artists", to: "/onboarding" },
 ];
 
 export function Navbar() {

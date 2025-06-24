@@ -53,11 +53,12 @@ export function ArtistCard({ artist }: { artist: Artist }) {
             href={`/quote/${artist.id}`}
             className={buttonVariants({ className: "flex-grow" })}
           >
-            Get a Quote /{" "}
-            {artist.price.toLocaleString("en-US", {
-              style: "currency",
-              currency: "INR",
-            })}
+            Get a Quote
+            {/* /{" "} */}
+            {/* {artist.price.toLocaleString("en-US", { */}
+            {/*   style: "currency", */}
+            {/*   currency: "INR", */}
+            {/* })} */}
           </Link>
         </div>
       </CardContent>
