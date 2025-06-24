@@ -9,16 +9,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CreateArtistSchema } from "@/lib/validation";
+import { useFieldArray } from "react-hook-form";
 
 export default function AddArtistForm() {
   const form = useForm({
-    defaultValues: {
-      artistName: "",
-      categories: [],
-      fee: 500,
-      image: "",
-      location: "",
-    },
+    resolver: zodResolver(CreateArtistSchema),
+  });
+  const { fields: categories } = useFieldArray({
+    name: "categories",
+    control: form.control,
   });
   const onSubmit = (data: any) => {
     console.log("Form submitted with data:", data);
@@ -31,7 +32,7 @@ export default function AddArtistForm() {
       >
         <FormField
           control={form.control}
-          name="artistName"
+          name="name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Artist Name</FormLabel>
@@ -67,7 +68,7 @@ export default function AddArtistForm() {
         />
         <FormField
           control={form.control}
-          name="fee"
+          name="price"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Fee</FormLabel>

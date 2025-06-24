@@ -56,3 +56,7 @@ export async function GET(req: NextRequest) {
   data = data.slice(0, limit);
   return NextResponse.json({ data, hasNextPage });
 }
+
+export function POST(req: NextRequest) {
+  return NextResponse.json({ message: "Artist added" });
+}
