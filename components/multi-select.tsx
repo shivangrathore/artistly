@@ -190,6 +190,20 @@ export const MultiSelect = React.forwardRef<
       }
     };
 
+    React.useEffect(() => {
+      if (typeof props.value === "string") {
+        return;
+      }
+      if (selectedValues.length === 0) {
+        return;
+      }
+      if (Array.isArray(props.value)) {
+        if (props.value.length == 0) {
+          setSelectedValues([]);
+        }
+      }
+    }, [props.value, setSelectedValues, selectedValues]);
+
     return (
       <Popover
         open={isPopoverOpen}

@@ -24,6 +24,10 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    setHasScrolled(window.scrollY > 50);
+  }, []);
+
   return (
     <header
       className={cn(
