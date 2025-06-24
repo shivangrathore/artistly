@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateArtistSchema } from "@/lib/validation";
+import { CreateArtistSchema, CreateArtistSchemaType } from "@/lib/validation";
 import { useFieldArray } from "react-hook-form";
 import { CATEGORIES, LANGUAGES, LOCATIONS, MAX_PRICE, MIN_PRICE } from "@/data";
 import { MultiSelect } from "@/components/multi-select";
@@ -52,13 +52,18 @@ export default function AddArtistForm() {
     name: "languages",
     control: form.control,
   });
-  const onSubmit = (data: any) => {
-    console.log("Form submitted with data:", data);
+  const onSubmit = async (data: CreateArtistSchemaType) => {
+    await fetch("/api/artists", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
   };
   const onError = (errors: any) => {
     console.error("Form submission errors:", errors);
   };
-  console.log(categories, languages);
   return (
     <Form {...form}>
       <form
@@ -68,19 +73,24 @@ export default function AddArtistForm() {
         <FormField
           control={form.control}
           name="name"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Artist Name</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
+              {fieldState.error && (
+                <p className="text-destructive text-sm">
+                  {fieldState.error.message}
+                </p>
+              )}
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="categories"
-          render={() => (
+          render={({ fieldState }) => (
             <FormItem>
               <FormLabel>Categories</FormLabel>
               <FormControl>
@@ -100,13 +110,18 @@ export default function AddArtistForm() {
                   maxCount={categoryOptions.length}
                 />
               </FormControl>
+              {fieldState.error && (
+                <p className="text-destructive text-sm">
+                  {fieldState.error.message}
+                </p>
+              )}
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="languages"
-          render={() => (
+          render={({ fieldState }) => (
             <FormItem>
               <FormLabel>Languages</FormLabel>
               <FormControl>
@@ -126,13 +141,18 @@ export default function AddArtistForm() {
                   maxCount={languageOptions.length}
                 />
               </FormControl>
+              {fieldState.error && (
+                <p className="text-destructive text-sm">
+                  {fieldState.error.message}
+                </p>
+              )}
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="price"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Fee</FormLabel>
               <FormControl>
@@ -144,6 +164,11 @@ export default function AddArtistForm() {
                   placeholder="Enter fee in INR"
                 />
               </FormControl>
+              {fieldState.error && (
+                <p className="text-destructive text-sm">
+                  {fieldState.error.message}
+                </p>
+              )}
             </FormItem>
           )}
         />
@@ -151,17 +176,17 @@ export default function AddArtistForm() {
         <FormField
           control={form.control}
           name="image"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Profile Image</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  type="file"
-                  accept="image/*"
-                  placeholder="Upload profile image"
-                />
+                <Input {...field} type="text" placeholder="Image URL" />
               </FormControl>
+              {fieldState.error && (
+                <p className="text-destructive text-sm">
+                  {fieldState.error.message}
+                </p>
+              )}
             </FormItem>
           )}
         />
@@ -169,7 +194,7 @@ export default function AddArtistForm() {
         <FormField
           control={form.control}
           name="location"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Location</FormLabel>
               <FormControl>
@@ -186,6 +211,11 @@ export default function AddArtistForm() {
                   </SelectContent>
                 </Select>
               </FormControl>
+              {fieldState.error && (
+                <p className="text-destructive text-sm">
+                  {fieldState.error.message}
+                </p>
+              )}
             </FormItem>
           )}
         />

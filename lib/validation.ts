@@ -3,7 +3,6 @@ import { z } from "zod";
 
 const isValidLanguage = (lang: string) =>
   LANGUAGES.some((l) => l.toLowerCase() === lang.toLowerCase());
-
 const isValidCategory = (cat: string) =>
   CATEGORIES.some((c) => c.toLowerCase() === cat.toLowerCase());
 
@@ -19,6 +18,7 @@ export const CreateArtistSchema = z.object({
       }),
     )
     .min(1, "At least one category is required")
+    .max(3, "You can select up to 3 categories")
     .refine((cats) => cats.every((cat) => isValidCategory(cat.value))),
   languages: z
     .array(
@@ -27,6 +27,7 @@ export const CreateArtistSchema = z.object({
       }),
     )
     .min(1, "At least one language is required")
+    .max(3, "You can select up to 3 languages")
     .refine((langs) => langs.every((lang) => isValidLanguage(lang.value))),
   image: z.string().url("Image must be a valid URL"),
   location: z.string().min(1, "Location is required").refine(isValidLocation),
@@ -35,3 +36,5 @@ export const CreateArtistSchema = z.object({
     .min(MIN_PRICE, "Price must be a positive number")
     .max(MAX_PRICE, "Price must be less than 100000"),
 });
+
+export type CreateArtistSchemaType = z.infer<typeof CreateArtistSchema>;

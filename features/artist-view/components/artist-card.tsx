@@ -44,7 +44,10 @@ export function ArtistCard({ artist }: { artist: Artist }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <img className="w-full rounded-md" src={artist.image} />
+        <img
+          className="w-full rounded-md aspect-square object-cover object-top"
+          src={artist.image}
+        />
         <div className="mt-4 text-gray-300 flex gap-2 items-center">
           <Link
             href={`/quote/${artist.id}`}
